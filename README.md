@@ -1,12 +1,10 @@
 # ParcialCarreras
 
-Queremos armar un programa que nos permita simular unas fantásticas carreras de autos en las cuales cada vehículo avanza tan rápido como puede para consagrarse campeón, aprovechando del uso de algunos poderes especiales (o power ups) que encuentren a lo largo del trayecto para sacar ventaja por sobre los demás autos. 
+Queremos armar un programa que nos permita simular unas fantásticas carreras de autos en las cuales cada vehículo avanza tan rápido como puede para consagrarse campeón aprovechando del uso de algunos poderes especiales (o power ups) que encuentren a lo largo del trayecto para sacar ventaja por sobre los demás autos. 
 
 ![mario-kart](https://user-images.githubusercontent.com/54424951/167049770-6c8a0d04-e290-47e5-8714-f433c8a0cc08.gif)
 
-De cada auto conocemos su **color** (que nos servirá para identificarlo durante el desarrollo de la carrera), la **velocidad**
-
-a la que está yendo y la **distancia** que recorrió, ambos valores de tipo entero.
+De cada auto conocemos su **color** (que nos servirá para identificarlo durante el desarrollo de la carrera), la **velocidad** a la que está yendo y la **distancia** que recorrió, ambos valores de tipo entero.
 
 De la carrera sólo nos interesa el estado actual de los autos que están participando, lo cual nos permitirá analizar cómo viene cada uno, y posteriormente procesar aquellos eventos que se den en la carrera para determinar el resultado de la misma.
 
@@ -20,11 +18,11 @@ Teniendo en cuenta lo descrito anteriormente se pide resolver los siguientes pun
 2.Desarrollar las funciones necesarias para manipular el estado de los autos para que sea posible:
 
  1. Hacer que un auto **corra** durante un determinado tiempo. Luego de correr la cantidad de tiempo indicada, la distancia recorrida por el auto debería ser equivalente a la distancia que llevaba recorrida + ese tiempo \* la velocidad a la que estaba yendo.
- 
- 2. 
-    1. A partir de un modificador de tipo **Int -> Int**, queremos poder **alterar la velocidad** de un auto de modo que su velocidad final sea la resultante de usar dicho modificador con su velocidad actual.
 
-    2. Usar la función del punto anterior para **bajar la velocidad** de un auto en una cantidad indicada de modo que se le reste a la velocidad actual la cantidad indicada, y como mínimo quede en 0, ya que no es válido que un auto quede con velocidad negativa.
+ 2. 
+    2.1 A partir de un modificador de tipo **Int -> Int**, queremos poder **alterar la velocidad** de un auto de modo que su velocidad final sea la resultante de usar dicho modificador con su velocidad actual.
+
+    2.2 Usar la función del punto anterior para **bajar la velocidad** de un auto en una cantidad indicada de modo que se le reste a la velocidad actual la cantidad indicada, y como mínimo quede en 0, ya que no es válido que un auto quede con velocidad negativa.
 
 3.Como se explicó inicialmente sobre las carreras que queremos simular, los autos que participan pueden gatillar poderes especiales a los que denominamos **power ups**.
 
@@ -42,7 +40,9 @@ Inicialmente queremos poder representar los siguientes power ups, pero debería 
 
 Como se mencionó anteriormente, disponemos de la siguiente función para usar dentro de la resolución:
 
-**afectarALosQueCumplen :: (a -> Bool) -> (a -> a) -> [a] -> [a] afectarALosQueCumplen criterio efecto lista = (map efecto . filter criterio) lista ++ filter (not.criterio) lista**
+***afectarALosQueCumplen :: (a -> Bool) -> (a -> a) -> [a] -> [a]***
+
+***afectarALosQueCumplen criterio efecto lista = (map efecto . filter criterio) lista ++ filter (not.criterio) lista***
 
 4.A partir de todo lo construido hasta ahora queremos finalmente simular una carrera, para lo cual se provee una lista de **eventos**, que son funciones que permiten ir de un estado de la carrera al siguiente, y el estado inicial de la carrera a partir del cual se producen dichos eventos. Con esta información buscamos generar una **“tabla de posiciones”**, que incluye la información de en qué **puesto** quedó cada auto asociado al **color** del auto en cuestión.
 
