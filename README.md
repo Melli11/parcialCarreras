@@ -2,7 +2,7 @@
 
 Queremos armar un programa que nos permita simular unas fantásticas carreras de autos en las cuales cada vehículo avanza tan rápido como puede para consagrarse campeón, aprovechando del uso de algunos poderes especiales (o power ups) que encuentren a lo largo del trayecto para sacar ventaja por sobre los demás autos. 
 
-<center> ![Aspose Words ecb13024-bf30-42a2-9a15-9f8d2857bd68 001](https://user-images.githubusercontent.com/54424951/167049354-b22f95b8-0edb-491e-93cd-15d33e36c643.png) </center>
+![mario-kart](https://user-images.githubusercontent.com/54424951/167049770-6c8a0d04-e290-47e5-8714-f433c8a0cc08.gif)
 
 De cada auto conocemos su **color** (que nos servirá para identificarlo durante el desarrollo de la carrera), la **velocidad**
 
