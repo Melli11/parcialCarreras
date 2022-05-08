@@ -40,6 +40,9 @@ vaTranquilo unAuto competidores = nadieCerca unAuto competidores && lesVaGanando
 lesVaGanandoATodos :: Auto -> [Auto] -> Bool
 lesVaGanandoATodos unAuto = all (mayorDistanciaDeUnAuto unAuto) . filter (/= unAuto)
 
+-- funcion auxiliar
+lesVaGanandoA :: Auto -> [Auto] -> [Auto]
+lesVaGanandoA unAuto = filter ((==True).mayorDistanciaDeUnAuto unAuto) . filter (/= unAuto)
 -- con filter (/= unAuto) me quedo con todos los autos diferentes del que estoy preguntando
 
 mayorDistanciaDeUnAuto ::Auto -> Auto -> Bool
@@ -63,10 +66,10 @@ correrDuranteUnTiempo auto tiempo = auto {distancia = distancia auto + tiempo * 
 
 
 alterarLaVelocidad' :: (Number -> Number ) -> Auto -> Auto
-alterarLaVelocidad'  modificador auto = auto {velocidad = modificador (velocidad auto)}   
+alterarLaVelocidad'  modificador auto = auto {velocidad = modificador (velocidad auto)}
 
 alterarLaVelocidad:: (Number -> Number ) -> Auto  -> Auto
-alterarLaVelocidad    modificador auto = auto {velocidad = modificador.velocidad $auto}   
+alterarLaVelocidad    modificador auto = auto {velocidad = modificador.velocidad $auto}
 
 bajarVelocidad :: Number -> Auto -> Auto
 bajarVelocidad cantidad = alterarLaVelocidad ( max 0 . subtract cantidad )
@@ -78,7 +81,40 @@ bajarVelocidad cantidad = alterarLaVelocidad ( max 0 . subtract cantidad )
 -- Input: subtract 3 5
 -- Output: 2
 
+-- 3. Power UPS
 
--- bajarVelocidad :: Number -> Auto -> Auto
--- bajarVelocidad :: Number -> Auto -> Auto
--- bajarVelocidad cantidad auto = auto { velocidad = min 0 (alterarLaVelocidad (- cantidad) (velocidad auto)  )}
+afectarALosQueCumplen :: (a -> Bool) -> (a -> a) -> [a] -> [a]
+afectarALosQueCumplen criterio efecto lista = (map efecto . filter criterio) lista ++ filter (not.criterio) lista
+
+-- Inicialmente queremos poder representar los siguientes power ups, pero debería ser fácil incorporar más
+-- power ups a futuro para enriquecer nuestro programa:
+
+-- a. terremoto: luego de usar este poder, los autos que están cerca del que gatilló el power up bajan
+-- su velocidad en 50
+
+terremoto' :: Auto -> (Auto -> Auto) -> [Auto] -> [Auto]
+terremoto' unAuto competidores = map(bajarVelocidad 50).afectarALosQueCumplen (estaCerca unAuto ) competidores
+
+terremoto :: Auto -> Number-> (Auto -> Auto) -> [Auto] -> [Auto]
+terremoto unAuto cantidad = miguelitos unAuto 50
+
+-- este poder debe permitir configurarse con una cantidad que indica en cuánto deberán
+-- bajar la velocidad los autos que se vean afectados por su uso. Los autos a afectar son aquellos a
+-- los cuales el auto que gatilló el power up les vaya ganando
+
+miguelitos :: Auto -> Number -> (Auto -> Auto) -> [Auto] -> [Auto]
+miguelitos unAuto cantidad competidores  =  map (bajarVelocidad cantidad) . afectarALosQueCumplen (mayorDistanciaDeUnAuto unAuto) competidores
+
+jetpack :: Auto -> Number -> Auto
+jetpack unAuto duracion = foldl aplicarPowers unAuto [alterarLaVelocidad (*2),flip correrDuranteUnTiempo  duracion ,bajarVelocidad (velocidad unAuto)]
+aplicarPowers  unAuto f = f unAuto
+
+
+--  jet pack: este poder debe afectar, dentro de la carrera, solamente al auto que gatilló el poder. El
+-- jet pack tiene un impacto que dura una cantidad limitada de tiempo, el cual se espera poder
+-- configurar.
+-- Cuando se activa el poder del jet pack, el auto afectado duplica su velocidad actual, luego corre
+-- durante el tiempo indicado y finalmente su velocidad vuelve al valor que tenía antes de que se
+-- active el poder.
+-- Por simplicidad, no se espera que los demás autos que participan de la carrera también avancen
+-- en ese tiempo.
