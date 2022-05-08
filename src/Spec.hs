@@ -12,10 +12,11 @@ correrTests = hspec $ do
 -- suiteDeTestsDeParte4
 suiteDeTestsDeParte1 = describe "Concediendo Deseos" $ do
   -- auto = Auto Color Vel Dist
+  let autoAmarillo = Auto Amarillo 125 300
   let autoRojo = Auto Rojo 100 250
   let autoVerde = Auto Verde 75 200
   let autoAzul = Auto Azul 50 195
-  
+  let listaDeAutos = [autoAmarillo,autoRojo,autoVerde,autoAzul]
   describe "Auto y Carrera" $ do
     it "Un auto  está cerca de otro si son autos distintos y la distancia que hay entre ellos (en valor absoluto) es menor a 10 " $ do
        estaCerca autoVerde autoAzul `shouldBe`  True
@@ -23,7 +24,32 @@ suiteDeTestsDeParte1 = describe "Concediendo Deseos" $ do
        estaCerca autoRojo autoRojo `shouldBe`  False
     it "Un auto  NO está cerca de otro si la distancia que hay entre ellos (en valor absoluto) es menor a 10 " $ do
        estaCerca autoVerde autoRojo `shouldBe`  False
+    it "El auto Amarillo (dist 300) ocupa el primer lugar de la carrera " $ do
+        enQuePuestoEsta autoAmarillo listaDeAutos `shouldBe`  1
+    it "El auto Rojo (dist 250) ocupa el primer lugar de la carrera " $ do
+        enQuePuestoEsta autoRojo listaDeAutos `shouldBe`  2
+    it "El auto Verde (dist 200) ocupa el primer lugar de la carrera " $ do
+        enQuePuestoEsta autoVerde listaDeAutos `shouldBe`  3
+    it "El auto Azul (dist 195) ocupa el primer lugar de la carrera " $ do
+        enQuePuestoEsta autoAzul listaDeAutos `shouldBe`  4
+    it "El auto Amarillo va tranquilo porque ocupa el primer lugar de la carrera y no tiene a nadie cerca (max dif 50) " $ do
+        vaTranquilo autoAmarillo  listaDeAutos `shouldBe`  True
+    it "El auto Rojo NO va tranquilo porque no ocupa el primer lugar de la carrera " $ do
+        vaTranquilo autoRojo listaDeAutos `shouldBe`  False
+    it "Si un auto compite solo no va tranquilo porque no sabe a quienes les va ganando" $ do
+        vaTranquilo autoRojo [] `shouldBe`  False
+    
+        
   
+
+--   enQuePuestoEsta autoAmarillo listaDeAutosWinRojo 
+-- 1
+-- *Spec> enQuePuestoEsta autoAzul listaDeAutosWinRojo     
+-- 4
+-- *Spec> enQuePuestoEsta autoRojo  listaDeAutosWinRojo 
+-- 2
+-- *Spec> enQuePuestoEsta autoVerde   listaDeAutosWinRojo 
+-- 3
     -- it "Un auto va tranquilo si no tienen ningun auto cerca y les va gananado a todos" $ do
     --    `shouldBe` 0 
   --   it "En que puesto está" $ do
